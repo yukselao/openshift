@@ -1,0 +1,32 @@
+$TTL 3H
+@	IN SOA	@ security.tr.ibm.com. (
+					0	; serial
+					1D	; refresh
+					1H	; retry
+					1W	; expire
+					3H )	; minimum
+	NS	@
+	A	127.0.0.1
+	AAAA	::1
+www     A       10.1.1.39
+api         IN      CNAME   controllb
+api-int         IN      CNAME   controllb
+controllb   A       10.1.1.72
+computelb   A       10.1.1.73
+ns0   A       10.1.1.2
+lbint   A       10.1.1.2
+lb   A       10.1.1.2
+bootstrap     A        10.1.1.59
+control-plane-0     A        10.1.1.61
+control-plane-1     A        10.1.1.62
+control-plane-2     A        10.1.1.63
+compute-0     A        10.1.1.64
+compute-1     A        10.1.1.65
+compute-2     A        10.1.1.66
+etcd-0     A        10.1.1.61
+etcd-1     A        10.1.1.62
+etcd-2     A        10.1.1.63
+_etcd-server-ssl._tcp       SRV     0 10 2380       etcd-0.security.tr.ibm.com.
+_etcd-server-ssl._tcp       SRV     0 10 2380       etcd-1.security.tr.ibm.com.
+_etcd-server-ssl._tcp       SRV     0 10 2380       etcd-2.security.tr.ibm.com.
+*	IN	CNAME	computelb

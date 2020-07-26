@@ -1,0 +1,24 @@
+$ORIGIN .
+$TTL 86400
+1.1.10.in-addr.arpa       IN SOA  ns0.security.tr.ibm.com. root.1.1.10.in-addr.arpa. (
+                                        10       ; serial
+                                        1D       ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+              NS      ns0.security.tr.ibm.com.
+$ORIGIN 1.1.10.in-addr.arpa.
+72             IN      PTR     controllb.security.tr.ibm.com.
+73             IN      PTR     computelb.security.tr.ibm.com.
+2             IN      PTR     lbint.security.tr.ibm.com.
+;;73            IN      PTR      api.security.tr.ibm.com.
+59            IN      PTR      bootstrap.security.tr.ibm.com.
+61            IN      PTR      control-plane-0.security.tr.ibm.com.
+62            IN      PTR      control-plane-1.security.tr.ibm.com.
+63            IN      PTR      control-plane-2.security.tr.ibm.com.
+61            IN      PTR      etcd-0.security.tr.ibm.com.
+62            IN      PTR      etcd-1.security.tr.ibm.com.
+63            IN      PTR      etcd-2.security.tr.ibm.com.
+64            IN      PTR      compute-0.security.tr.ibm.com.
+65            IN      PTR      compute-1.security.tr.ibm.com.
+66            IN      PTR      compute-2.security.tr.ibm.com.

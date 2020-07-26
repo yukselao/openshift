@@ -1,0 +1,33 @@
+apiVersion: v1
+baseDomain: tr.ibm.com
+metadata:
+  name: security
+platform:
+  vsphere:
+    vcenter: vcenter.icc.local
+    username: Administrator@Vsphere.local
+    password: mypassword
+    datacenter: dc1
+    defaultDatastore: LEN_SSD
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+pullSecret: '{{your pull secret}}'
+sshKey: '{{your ssh key}}'
+additionalTrustBundle: | 
+  -----BEGIN CERTIFICATE-----
+  {{your cert}}
+  -----END CERTIFICATE-----
+imageContentSources: 
+- mirrors:
+  - lbint.security.tr.ibm.com:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - lbint.security.tr.ibm.com:5000/ocp4/openshift4
+  source: registry.svc.ci.openshift.org/ocp/release
