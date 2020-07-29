@@ -1,0 +1,7 @@
+
+
+Useful commands:
+
+Connect to bootstrap:
+
+ssh core@bootstrap.security.tr.ibm.com

@@ -1,0 +1,47 @@
+shared-network ocpint {
+subnet 10.1.1.0 netmask 255.255.255.0 {
+  option routers 10.1.1.1;
+  option subnet-mask 255.255.255.0;
+  option domain-search "ocpint.data.tr.ibm.com";
+  option domain-name "ocplnt.icc.ibn.com";
+  option domain-name-servers 10.1.1.2;
+  range 10.1.1.10 10.1.1.200;
+  option time-offset -18000; # Eastern Standard Time
+  }
+}
+host bootstrap {
+  option host-name "bootstrap.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:c7:7d;
+  fixed-address 10.1.1.59;
+}
+host control-plane-0 {
+  option host-name "control-plane-0.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:21:b9;
+  fixed-address 10.1.1.61;
+}
+host control-plane-1 {
+  option host-name "control-plane-1.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:5e:3a;
+  fixed-address 10.1.1.62;
+}
+host control-plane-2 {
+  option host-name "control-plane-3.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:c0:2b;
+  fixed-address 10.1.1.63;
+}
+host compute-0 {
+  option host-name "compute-0.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:77:a5;
+  fixed-address 10.1.1.64;
+}
+host compute-1 {
+  option host-name "compute-1.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:97:35;
+  fixed-address 10.1.1.65;
+}
+host compute-2 {
+  option host-name "compute-2.data.tr.ibm.com";
+  hardware ethernet 00:50:56:b6:92:15;
+  fixed-address 10.1.1.66;
+}
+

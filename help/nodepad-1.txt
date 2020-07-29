@@ -1,0 +1,182 @@
+https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html
+######## Install Dependecies
+
+Get pull secret json config from:
+https://cloud.redhat.com/openshift/install/vsphere/user-provisioned
+
+check tags:
+https://quay.io/repository/openshift-release-dev/ocp-release?tag=&tab=tags
+
+
+wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.29/openshift-install-linux-4.3.29.tar.gz
+
+wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.29/openshift-client-linux-4.3.29.tar.gz
+
+wget https://rpmfind.net/linux/epel/8/Everything/x86_64/Packages/s/screen-4.6.2-10.el8.x86_64.rpm
+
+disable selinux, firewalld 
+[root@lbint ~]# subscription-manager register --username aliokanyuksel1 --password mypassword --auto-attach
+
+yum install jq httpd httpd-tools podman haproxy dhcp-server python38 nfs-utils policycoreutils-python-utils bind bind-utils -y
+
+Config files:
+/etc/haproxy/haproxy.cfg
+/var/named/security.tr.ibm.com.zone.db
+/etc/dhcp/dhcpd.conf
+
+######## Setup SSH client
+
+ssh-keygen -t rsa -b 4096 -N ''
+
+eval "$(ssh-agent -s)"
+
+ssh-add ~/.ssh/id_rsa
+
+######## Create folders
+
+
+mkdir /opt/ocpint
+
+mkdir -p /opt/registry/{auth,certs,data}
+
+
+
+
+echo -n 'intadmin:intadmin' | base64 -w0
+
+
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days 3650 -out domain.crt
+cp /opt/registry/certs/domain.crt /etc/pki/ca-trust/source/anchors/
+update-ca-trust
+
+htpasswd -bBc /opt/registry/auth/htpasswd intadmin intadmin
+
+
+(did u create certs?, did you setup htpasswd?)
+
+podman run --name mirror-registry -p 5000:5000 -v /opt/registry/data:/var/lib/registry:z -v \
+/opt/registry/auth:/auth:z -e "REGISTRY_AUTH=htpasswd" -e \
+"REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e \
+REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -v /opt/registry/certs:/certs:z -e \
+REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt -e \
+REGISTRY_HTTP_TLS_KEY=/certs/domain.key -d docker.io/library/registry:2
+
+check:
+curl -k -u intadmin:intadmin https://lbint.security.tr.ibm.com/v2/_catalog
+
+
+
+
+export OCP_RELEASE=4.3.29-x86_64
+
+export LOCAL_REGISTRY='lbint.security.tr.ibm.com:5000' 
+
+export LOCAL_REPOSITORY='ocp4/openshift4' 
+
+export PRODUCT_REPO='openshift-release-dev' 
+
+export LOCAL_SECRET_JSON='/opt/pull-secret-v2.json' 
+
+export RELEASE_NAME="ocp-release" 
+
+
+oc adm -a ${LOCAL_SECRET_JSON} release mirror \
+--from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE} \
+--to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}
+
+
+Success
+Update image:  lbint.security.tr.ibm.com:5000/ocp4/openshift4:4.3.29-x86_64
+Mirror prefix: lbint.security.tr.ibm.com:5000/ocp4/openshift4
+
+To use the new mirrored repository to install, add the following section to the install-config.yaml:
+
+imageContentSources:
+- mirrors:
+  - lbint.security.tr.ibm.com:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - lbint.security.tr.ibm.com:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+
+
+To use the new mirrored repository for upgrades, use the following to create an ImageContentSourcePolicy:
+
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: example
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - lbint.security.tr.ibm.com:5000/ocp4/openshift4
+    source: quay.io/openshift-release-dev/ocp-release
+  - mirrors:
+    - lbint.security.tr.ibm.com:5000/ocp4/openshift4
+    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+
+
+cat /opt/registry/certs/domain.crt | sed "s:^: :g"
+
+curl https://raw.githubusercontent.com/yukselao/openshift/master/install-config-.yaml
+
+
+./openshift-install create manifests --dir=/opt/ocpint
+
+change true to false in cluster-scheduler-02-config.yml
+
+./openshift-install create ignition-configs --dir=/opt/ocpint
+
+
+
+
+
+named-checkconf -z
+
+
+* ignition files are valid for 24 hours - so if your installation takes longer than 24 hours due to issues, you have to generate new ignition files.
+
+./openshift-install create manifests --dir=/opt/ocpint
+
+./openshift-install create ignition-configs --dir=/opt/ocpint
+
+If bootstrap fails:
+ssh coreos
+openshift-install gather bootstrap --bootstrap <bootstrap-host-ip> --master <control-plane-host-ip> [--master <control-plane-host-ip> ...]
+
+
+
+cd /opt/ocpinstall
+openshift-install --dir=. wait-for bootstrap-complete --log-level debug
+
+cd /opt/openshift/installer/upi/vpshere
+terraform apply -auto-approve -var 'bootstrap_complete=true'
+
+cd /opt/ocpinstall
+openshift-install --dir=. wait-for install-complete --log-level debug
+
+openshift-install gather bootstrap --bootstrap <bootstrap-host-ip> --master <control-plane-host-ip> [--master <control-plane-host-ip> ...]
+
+./openshift-install create cluster --dir=cluster-test1 
+
+http://slack.kubernetes.io/
+
+https://cloudpak8s.io/security/install/
+
+ 1029  export KUBECONFIG=/opt/ocpinstall/auth/kubeconfig
+ 1030  kubectl getnode
+ 1031  kubectl get node
+ 1032  oc get clusteroperators
+ 1033  oc get pods -n openshift-image-registry
+ 1034  oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
+ 1035  oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState": "Managed"}}'
+ 1036  oc get pods -n openshift-image-registry
+
+
+
+ 1101  curl -kLo cloudctl-linux-amd64-v3.2.3-1557 https://icp-console.apps.security.tr.ibm.com:443/api/cli/cloudctl-linux-amd64
+curl -kLo helm-darwin-amd64.tar.gz https://icp-console.apps.security.tr.ibm.com:443/api/cli/helm-darwin-amd64.tar.gz
+[root@lbint ~]# curl -kLo helm-darwin-amd64.tar.gz https://icp-console.apps.security.tr.ibm.com:443/api/cli/helm-linux-amd64.tar.gz
+
+
+
