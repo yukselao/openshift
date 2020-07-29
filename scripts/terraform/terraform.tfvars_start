@@ -1,0 +1,20 @@
+cluster_id = "security"
+cluster_domain = "security.tr.ibm.com"
+base_domain = "tr.ibm.com"
+vsphere_server = "vcenter.icc.local"
+vsphere_user = "administrator@vsphere.local"
+vsphere_password = "mypassword"
+vsphere_cluster = "Cluster"
+vsphere_datacenter = "Datacenter"
+vsphere_datastore = "V5K_Sata_2"
+vm_template = "template-rhcos-4.3.8"
+machine_cidr = "10.1.1.0/24"
+
+vm_network = "AliOkan - Openshift - Portgroup"
+
+control_plane_count = 3
+compute_count = 3
+
+bootstrap_ignition_url = "http://10.1.1.2:8080/bootstrap.ign"
+
+control_plane_ignition = <<END_OF_MASTER_IGNITION
