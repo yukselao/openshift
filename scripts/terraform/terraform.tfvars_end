@@ -1,0 +1,7 @@
+
+END_OF_WORKER_IGNITION
+
+# put your static IPs in here
+bootstrap_ip = "10.1.1.59"
+control_plane_ips = ["10.1.1.61", "10.1.1.62", "10.1.1.63"]
+compute_ips = ["10.1.1.64", "10.1.1.65","10.1.1.66"]

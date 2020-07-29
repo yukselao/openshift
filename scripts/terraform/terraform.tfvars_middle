@@ -1,0 +1,4 @@
+
+END_OF_MASTER_IGNITION
+
+compute_ignition = <<END_OF_WORKER_IGNITION
