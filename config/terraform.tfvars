@@ -1,0 +1,31 @@
+cluster_id = "security"
+cluster_domain = "security.tr.ibm.com"
+base_domain = "tr.ibm.com"
+vsphere_server = "vcenter.icc.local"
+vsphere_user = "administrator@vsphere.local"
+vsphere_password = "mypassword"
+vsphere_cluster = "Cluster"
+vsphere_datacenter = "Datacenter"
+vsphere_datastore = "V5K_Sata_2"
+vm_template = "template-rhcos-4.3.8"
+machine_cidr = "10.1.1.0/24"
+
+vm_network = "AliOkan - Openshift - Portgroup"
+
+control_plane_count = 3
+compute_count = 3
+
+bootstrap_ignition_url = "http://10.1.1.2:8080/bootstrap.ign"
+
+control_plane_ignition = <<END_OF_MASTER_IGNITION
+{"ignition":{"config":{"append":[{"source":"https://api-int.security.tr.ibm.com:22623/config/master","verification":{}}]},"security":{"tls":{"certificateAuthorities":[{"source":"data:text/plain;charset=utf-8;base64,LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURFRENDQWZpZ0F3SUJBZ0lJVjcxQWpxVEpISnN3RFFZSktvWklodmNOQVFFTEJRQXdKakVTTUJBR0ExVUUKQ3hNSmIzQmxibk5vYVdaME1SQXdEZ1lEVlFRREV3ZHliMjkwTFdOaE1CNFhEVEl3TURjeU5USXlOVGd3TVZvWApEVE13TURjeU16SXlOVGd3TVZvd0pqRVNNQkFHQTFVRUN4TUpiM0JsYm5Ob2FXWjBNUkF3RGdZRFZRUURFd2R5CmIyOTBMV05oTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6M0dCSlBrenJqQXAKZExVNzN4VWlicTBPT2d5TFNhd0k1dzBtYWVVTExwOWNwWEQ1UWxCZG9IYXd5RXlIRzZJWmh6OU1MbHkvMEk2cAp0S2FjQjVSNFdCd01qRDdCbHg5Z2RFVExDb0ZNZWFTTmpna1M3akxOdWRNZzUxUUFFb0JFa1R4eEQwdEFFZ2FwClRVSVZYOFY5aC9KK1Noa1pER0FWMVo1ZGpZUjlQbXpoUWZXTGZyeXdvNVkzdjEyT3NvMkxQeUtaVkYzRGRXN0sKbWdrekxWd0ZvS0ZjYnppT1hFdk5sckxaSE4vNk11QzVmdXNIeDVlMFQ2aHEvdVZTNmJXVkFvTVdLU1VJeE1mMQpqeUNLWk9jUGFXdU1wTml3Yk51VkFoZkc4dnlIL2ZIR0pBRGprMlR2Nk1IbDRTcXAwbUcwcVk3R2dRbVJxbUVNClE2SXlJSllJcXdJREFRQUJvMEl3UURBT0JnTlZIUThCQWY4RUJBTUNBcVF3RHdZRFZSMFRBUUgvQkFVd0F3RUIKL3pBZEJnTlZIUTRFRmdRVUgrcnMzMkVoeUxSa0dBL0lQaUVRYVRYWFRHZ3dEUVlKS29aSWh2Y05BUUVMQlFBRApnZ0VCQUh0RGlJNEpwTnBmTU4zZURJMjh3NGdjZTkzWEZoWUl4czB6YzNJcVFwSUkxUmtvRTRZbFloUDVSRmpUCmRDNHhpeHFRNkowYjdnNnY5L0oyaGRENEtuUjBJZGlqSjNzRFpNOGRaVE1KQWVUcWw1eUlVbzVDTW9SOHhsOHMKYTYydDZoTUN3aklSRDVuTi9hbG43YS9CaVF0VC9id0xIQ1FSN3E2aFVta1VmNnlYV3lRRG1mUmNTZEZXalF0Tgo0SVpWYWxEZVhCZkdPWDQwdWcrM2tnTk55VE5CZzBxcStoM3drUkRDK3JSYlp3elhUZXNRSVRZbTkwblp5Y2NPCkcveWQ5T2d1ZVJocTVoMnBFVXhlaHBGVkxFMUdqSUc4UlY0RnBsS2FycjRCUkl3RWxBeFNSdjl0THhQRDF2M20KMjlGcisxcnNMZVhTbC9GN0tpL1VWa3AwUHpzPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==","verification":{}}]}},"timeouts":{},"version":"2.2.0"},"networkd":{},"passwd":{},"storage":{},"systemd":{}}
+END_OF_MASTER_IGNITION
+
+compute_ignition = <<END_OF_WORKER_IGNITION
+{"ignition":{"config":{"append":[{"source":"https://api-int.security.tr.ibm.com:22623/config/worker","verification":{}}]},"security":{"tls":{"certificateAuthorities":[{"source":"data:text/plain;charset=utf-8;base64,LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURFRENDQWZpZ0F3SUJBZ0lJVjcxQWpxVEpISnN3RFFZSktvWklodmNOQVFFTEJRQXdKakVTTUJBR0ExVUUKQ3hNSmIzQmxibk5vYVdaME1SQXdEZ1lEVlFRREV3ZHliMjkwTFdOaE1CNFhEVEl3TURjeU5USXlOVGd3TVZvWApEVE13TURjeU16SXlOVGd3TVZvd0pqRVNNQkFHQTFVRUN4TUpiM0JsYm5Ob2FXWjBNUkF3RGdZRFZRUURFd2R5CmIyOTBMV05oTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6M0dCSlBrenJqQXAKZExVNzN4VWlicTBPT2d5TFNhd0k1dzBtYWVVTExwOWNwWEQ1UWxCZG9IYXd5RXlIRzZJWmh6OU1MbHkvMEk2cAp0S2FjQjVSNFdCd01qRDdCbHg5Z2RFVExDb0ZNZWFTTmpna1M3akxOdWRNZzUxUUFFb0JFa1R4eEQwdEFFZ2FwClRVSVZYOFY5aC9KK1Noa1pER0FWMVo1ZGpZUjlQbXpoUWZXTGZyeXdvNVkzdjEyT3NvMkxQeUtaVkYzRGRXN0sKbWdrekxWd0ZvS0ZjYnppT1hFdk5sckxaSE4vNk11QzVmdXNIeDVlMFQ2aHEvdVZTNmJXVkFvTVdLU1VJeE1mMQpqeUNLWk9jUGFXdU1wTml3Yk51VkFoZkc4dnlIL2ZIR0pBRGprMlR2Nk1IbDRTcXAwbUcwcVk3R2dRbVJxbUVNClE2SXlJSllJcXdJREFRQUJvMEl3UURBT0JnTlZIUThCQWY4RUJBTUNBcVF3RHdZRFZSMFRBUUgvQkFVd0F3RUIKL3pBZEJnTlZIUTRFRmdRVUgrcnMzMkVoeUxSa0dBL0lQaUVRYVRYWFRHZ3dEUVlKS29aSWh2Y05BUUVMQlFBRApnZ0VCQUh0RGlJNEpwTnBmTU4zZURJMjh3NGdjZTkzWEZoWUl4czB6YzNJcVFwSUkxUmtvRTRZbFloUDVSRmpUCmRDNHhpeHFRNkowYjdnNnY5L0oyaGRENEtuUjBJZGlqSjNzRFpNOGRaVE1KQWVUcWw1eUlVbzVDTW9SOHhsOHMKYTYydDZoTUN3aklSRDVuTi9hbG43YS9CaVF0VC9id0xIQ1FSN3E2aFVta1VmNnlYV3lRRG1mUmNTZEZXalF0Tgo0SVpWYWxEZVhCZkdPWDQwdWcrM2tnTk55VE5CZzBxcStoM3drUkRDK3JSYlp3elhUZXNRSVRZbTkwblp5Y2NPCkcveWQ5T2d1ZVJocTVoMnBFVXhlaHBGVkxFMUdqSUc4UlY0RnBsS2FycjRCUkl3RWxBeFNSdjl0THhQRDF2M20KMjlGcisxcnNMZVhTbC9GN0tpL1VWa3AwUHpzPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==","verification":{}}]}},"timeouts":{},"version":"2.2.0"},"networkd":{},"passwd":{},"storage":{},"systemd":{}}
+END_OF_WORKER_IGNITION
+
+# put your static IPs in here
+bootstrap_ip = "10.1.1.59"
+control_plane_ips = ["10.1.1.61", "10.1.1.62", "10.1.1.63"]
+compute_ips = ["10.1.1.64", "10.1.1.65","10.1.1.66"]

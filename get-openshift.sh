@@ -15,3 +15,15 @@ ln -s /opt/openshift/bin/kubectl /usr/local/bin/kubectl
 ln -s /opt/openshift/bin/oc /usr/local/bin/oc
 ln -s /opt/openshift/bin/openshift-install /usr/local/bin/openshift-install
 
+git clone https://github.com/openshift/installer.git
+cd installer/
+git checkout release-4.3
+cd installer/upi/vsphere
+
+echo 'Check these files, these files should be modified: 
+        upi/vsphere/machine/ignition.tf
+        upi/vsphere/machine/main.tf
+        upi/vsphere/main.tf
+        upi/vsphere/terraform.tfvars
+'
+
