@@ -1,0 +1,5 @@
+export GOVC_URL='vcenter.icc.local'
+export GOVC_USERNAME='administrator@vsphere.local'
+export GOVC_PASSWORD='mypassword'
+export GOVC_INSECURE=1
+export GOVC_DATASTORE='LEN_SSD'
